@@ -1,0 +1,67 @@
+{% extends "back/base.html" %}
+
+{% load staticfiles %}
+{% load custom_tags %}
+{% load i18n %}
+
+{% block title %}{% trans 'Plant data' %}{% endblock %}
+
+{% block website_name %}{% trans 'Plant data' %}
+    <a class="btn btn-primary" href='{% url "export" "data" %}?format=json' role="button">{% trans 'Json aktar' %}</a>
+    <a class="btn btn-success" href='{% url "export" "data" %}?format=xml' role="button">{% trans 'Xml aktar' %}</a>
+{% endblock %}
+
+{% block content %}
+
+{% if msg_ok %}
+    <div class="alert alert-info" role="alert">
+        <strong>{{ msg_ok }}</strong>
+    </div>
+{% endif %}
+
+{% if msg_err %}
+    <div class="alert alert-warning" role="alert">
+        <strong>{{ msg_err }}</strong>
+    </div>
+{% endif %}
+
+<div class="col-xs-12 col-sm-12 placeholder">
+    <!-- <button name="View plant" /> -->
+    <div class="table-responsive">
+        <table class="table table-responsive">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>UserId</th>
+                <th>Ip</th>
+                <th>Temperature</th>
+                <th>Humidity</th>
+                <th>DayNight</th>
+                <th>Moisture</th>
+                <th>LightLux</th>
+                <th>RelayState</th>
+                <th>CreatedDate</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for i in datas %}
+            <tr>
+                <td>#{{ i.id }}</td>
+                <td>{{ i.user_id }}</td>
+                <td><a class="tooltip-viewport-bottom" title="{{ i.remote_address }}">{{ i.remote_address | truncatechars:15 }}</a></td>
+                <td>{{ i.temperature }}</td>
+                <td>{{ i.humidity }}</td>
+                <td>{{ i.day_night }}</td>
+                <td>{{ i.moisture }}</td>
+                <td>{{ i.light_lux }}</td>
+                <td>{{ i.relay_state }}</td>
+                <td>{{ i.created_date }}</td>
+                <td><a class="btn btn-info" href="{% url 'index' %}" role="button">{% trans 'Göster' %}</a></td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+{% endblock %}
